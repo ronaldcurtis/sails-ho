@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+  form(action="/login",method="POST")
+    fieldset
+      input(id="username",name="username",type="text",placeholder="username or email")
+      input(id="password",name="password",type="password",placeholder="password")
+      input(type="hidden", name="_csrf", value="#{_csrf}")
+      label(for="remember")
+        input#remember(name="remember" type="checkbox")
+        | Remember Me
+      button(type="submit") Login

@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+  form(action="/api/v1/user", method="POST")
+    fieldset
+      input(id="username",name="username",type="text",placeholder="enter your username")
+      input(id="email",name="email",type="text",placeholder="enter your email")
+      input(id="password",name="password",type="password",placeholder="enter your password")
+      input(id="passwordConfirm",name="passwordConfirm",type="password",placeholder="retype your password")
+      input(name="_csrf", type="hidden", value="#{_csrf}")
+      button(type="submit") SUBMIT
