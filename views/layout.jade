@@ -16,5 +16,8 @@ html.no-js
     title= title
     meta(name='description', content='#{description}')
     meta(name='viewport', content='width=device-width,initial-scale=1.0')
+    != css('css/style.css')
   body
-    block content  
+    block content
+
+    != js('js/loader.js')
