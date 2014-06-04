@@ -33,6 +33,14 @@ module.exports.routes = {
 
 
   // Custom routes here...
+  'get /register': 'AuthController.register',
+  'get /login': 'AuthController.showLogin',
+  'get /admin': 'AuthController.showAdmin',
+  'get /logout': 'AuthController.logout',
+
+  'post /auth/register': 'AuthController.registerUser',
+  'post /auth/login': 'AuthController.processLogin'
+
 
 
   // If a request to a URL doesn't match any of the custom routes above,

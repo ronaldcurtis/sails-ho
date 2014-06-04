@@ -1,0 +1,12 @@
+extends ../layout
+
+block body
+	h1 Register
+	form(action="/auth/register", name="register-form", method="POST")
+		fieldset
+			input(id="username",name="username",type="text",placeholder="enter your username")
+			input(id="email",name="email",type="text",placeholder="enter your email")
+			input(id="password",name="password",type="password",placeholder="enter your password")
+			input(id="passwordConfirm",name="passwordConfirm",type="password",placeholder="retype your password")
+			input(name="_csrf", type="hidden", value="#{_csrf}")
+			button(type="submit") SUBMIT
