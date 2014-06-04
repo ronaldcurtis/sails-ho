@@ -50,7 +50,7 @@ module.exports = {
         }
         User.issueSessionToken(user, function(err, token) {
           if (err) return res.serverError(err);
-          res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 60*60*24*30} );
+          res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 100*60*60*24*30} );
           return res.send('Login Successful and remember_me token issued');
         });
       });
