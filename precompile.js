@@ -2,7 +2,7 @@
   "use strict";
   console.log('Precompiling...');
 
-  var Mincer = require('mincer'),
+  var Mincer = require('connect-mincer/node_modules/mincer'),
       CleanCss = require('clean-css'),
       uglify = require('uglify-js'),
       nib = require('nib'),
