@@ -55,7 +55,7 @@ module.exports.connections = {
     port: 27017,
     // user: 'username',
     // password: 'password',
-    database: 'sails'
+    database: ( ( process.env.NODE_ENV === 'test' ) ? 'sails-test' : 'sails' )
   },
 
   // PostgreSQL is another officially supported relational database.

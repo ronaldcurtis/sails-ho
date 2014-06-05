@@ -49,7 +49,7 @@ module.exports.session = {
   
   host: 'localhost',
   port: 27017,
-  db: 'sails',
+  db: ( ( process.env.NODE_ENV === 'test' ) ? 'sails-test' : 'sails' ),
   collection: 'sessions'
   //
   // Optional Values:

@@ -10,6 +10,7 @@
     "coffee-script": "^1.7.1",
     "connect-mincer": "^1.0.0",
     "ejs": "~0.8.4",
+    "expect.js": "^0.3.1",
     "grunt": "0.4.2",
     "grunt-contrib-clean": "^0.5.0",
     "grunt-contrib-coffee": "~0.10.1",
@@ -20,6 +21,8 @@
     "grunt-contrib-less": "~0.10.0",
     "grunt-contrib-uglify": "~0.4.0",
     "grunt-contrib-watch": "~0.5.3",
+    "grunt-env": "^0.4.1",
+    "grunt-mocha-test": "^0.11.0",
     "grunt-sails-linker": "~0.9.5",
     "grunt-shell": "^0.7.0",
     "grunt-sync": "~0.0.4",
@@ -35,6 +38,7 @@
     "sails-disk": "~0.10.0",
     "sails-mongo": "^0.10.0-rc5",
     "stylus": "^0.46.2",
+    "supertest": "^0.13.0",
     "uglify-js": "^2.4.13"
   },
   "scripts": {
