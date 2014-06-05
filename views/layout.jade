@@ -1,23 +1,26 @@
-doctype html
-html
+doctype
+//if lt IE 7
+  <html class="no-js lt-ie10 lt-ie9 lt-ie8 lt-ie7">
+//if IE 7
+  <html class="no-js lt-ie10 lt-ie9 lt-ie8">
+//if IE 8
+  <html class="no-js lt-ie10 lt-ie9">
+//if IE 9
+  <html class="no-js lt-ie10">
+//[if gt IE 9]><!
+html.no-js
+  //<![endif]
   head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
     title= title
-
-    // Viewport mobile tag for sensible mobile support
-    meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1")
-
+    meta(name='description', content='#{description}')
+    meta(name='viewport', content='width=device-width,initial-scale=1.0')
+    != css('styles/importer.css')
     block styles
-
   body
     block body
 
-    // A few optional dependencies, linked in order
 
-    // Bring in the socket.io client
-    script(type="text/javascript", src="/linker/js/socket.io.js")
 
-    // then beef it up with some convenience logic for talking to Sails.js'
-    script(type="text/javascript", src="/linker/js/sails.io.js")
-
-    // listen on socket.io for incoming messages
-    script(type="text/javascript", src="/linker/js/example.js")
+    != js('js/importer.js')
