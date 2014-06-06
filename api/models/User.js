@@ -66,37 +66,35 @@ module.exports = {
   },
   // End Attributes and instance methods
 
+  encryptPassword: function(value,cb) {
+    bcrypt.genSalt(10, function(err, salt) {
+      if (err){return cb(err);}
+      bcrypt.hash(value, salt, function(err, hash) {
+        if (err){return cb(err);}
+        cb(null, hash);
+      });
+    });
+  },
+
 	beforeCreate: function(values, next) {
 		if (!values.password || values.password != values.passwordConfirm ) {
 			return next({err:'Passwords do not match'});
 		}
-		bcrypt.genSalt(10, function(err, salt) {
-			if (err){return next(err);}
-			bcrypt.hash(values.password, salt, function(err, hash) {
-				if (err){return next(err);}
-				values.password = hash;
-				next();
-			});
-		});
+    User.encryptPassword(values.password, function(err, hash) {
+      if (err) return next(err);
+      values.password = hash;
+      next();
+    });
 	},
 
   beforeUpdate: function(values, next) {
-    // if (!values.password || values.password != values.passwordConfirm ) {
-    //   return next({err:'Passwords do not match'});
-    // }
-    // Updating requires user to enter password
-    if (!values.password) {
-      return next({err: 'Must enter a password'});
+    if (values.password) {
+      User.encryptPassword(values.password, function(err, hash) {
+        if (err) return next(err);
+        values.password = hash;
+        next();
+      });
     }
-    // bcrypt.compare values.password, this.password
-    // bcrypt.genSalt(10, function(err, salt) {
-    //   if (err){return next(err);}
-    //   bcrypt.hash(values.password, salt, function(err, hash) {
-    //     if (err){return next(err);}
-    //     values.password = hash;
-    //     next();
-    //   });
-    // });
   },
 
 

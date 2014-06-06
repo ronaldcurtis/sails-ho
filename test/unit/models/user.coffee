@@ -40,7 +40,7 @@ describe "User Model:", ->
 							User.destroy(newUser).exec (err)->
 								if err then throw err
 								done()
-
+			# TODO: uncomment below once issue fixed in sails-mongo
 			# it "must be unique", (done) ->
 			# 	userData =
 			# 		username: 'hello'
@@ -63,7 +63,7 @@ describe "User Model:", ->
 
 			it "must be required", (done) ->
 				userData =
-					username: "test_user"
+					username: "testuser"
 					password: "test_password"
 					passwordConfirm: "test_password"
 
@@ -77,7 +77,7 @@ describe "User Model:", ->
 
 			it "must be required", (done) ->
 				userData =
-					username: "test_user"
+					username: "testuser"
 					email: "testuser@sails.com"
 
 				User.create(userData).exec (err,newUser) ->
@@ -88,13 +88,13 @@ describe "User Model:", ->
 
 			it "must be at least 6 chars", (done) ->
 				userData =
-					username: "test_user"
+					username: "testuser"
 					email: "testuser@sails.com"
 					password: "test"
 					passwordConfirm: "test"
 
 				userData2 =
-					username: "test_user"
+					username: "testuser"
 					email: "testuser@sails.com"
 					password: "123456"
 					passwordConfirm: "123456"
@@ -112,13 +112,13 @@ describe "User Model:", ->
 
 			it "must not be more than 50 chars", (done) ->
 				userData =
-					username: "test_user"
+					username: "testuser"
 					email: "testuser@sails.com"
 					password: "123456789012345678901234567890123456789012345678901"
 					passwordConfirm: "123456789012345678901234567890123456789012345678901"
 				
 				userData2 =
-					username: "test_user"
+					username: "testuser"
 					email: "testuser@sails.com"
 					password: "12345678901234567890123456789012345678901234567890"
 					passwordConfirm: "12345678901234567890123456789012345678901234567890"
@@ -136,7 +136,7 @@ describe "User Model:", ->
 
 			it "must be equal to passwordConfirm", (done) ->
 				userData =
-					username: "test_user"
+					username: "testuser"
 					email: "testuser@sails.com"
 					password: "test_password"
 					passwordConfirm: "asdasd"
@@ -149,7 +149,7 @@ describe "User Model:", ->
 
 			it "must be encrypted", (done) ->
 				userData =
-					username: "test_user"
+					username: "testuser"
 					email: "testuser@sails.com"
 					password: "test_password"
 					passwordConfirm: "test_password"
@@ -163,8 +163,44 @@ describe "User Model:", ->
 						User.destroy(newUser).exec (err)->
 							if err then throw err
 							done()
-							
-					
+	
+	# When Updating a user
+	describe "When Updating a user", ->
+		user = null
+
+		# Password
+		describe "password:", ->
+
+			before (done) ->
+				userData =
+					username: "testuser"
+					email: "testuser@sails.com"
+					password: "test_password"
+					passwordConfirm: "test_password"
+
+				User.destroy({username: 'testuser'}).exec (err)->
+					if err then throw err
+					User.create(userData).exec (err,newUser) ->
+						if err then throw err
+						user = newUser
+						done()
+
+			after (done) ->
+				User.destroy({username: 'testuser'}).exec (err)->
+					done(err)
+
+			it "must be encrypted if it changes", (done) ->
+				oldHashedPass = null
+				User.update({username: 'testuser'}, {password: 'test_password2'}).exec (err, updated) ->
+					if err then throw err
+					expect(updated[0].password).to.be.a('string')
+					expect(updated[0].password).to.not.be('test_password2')
+					expect(updated[0].password).to.not.be(oldHashedPass)
+					bcrypt.compare 'test_password2', updated[0].password, (err, isEqual) ->
+						expect(isEqual).to.be(true)
+						done()
+
+						
 
 
 		# describe ""						
