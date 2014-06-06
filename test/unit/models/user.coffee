@@ -168,6 +168,42 @@ describe "User Model:", ->
 	describe "When Updating a user", ->
 		user = null
 
+		before (done) ->
+			userData =
+				username: "testuser"
+				email: "testuser@sails.com"
+				password: "test_password"
+				passwordConfirm: "test_password"
+
+			User.destroy({username: 'testuser'}).exec (err)->
+				if err then throw err
+				User.create(userData).exec (err,newUser) ->
+					if err then throw err
+					user = newUser
+					done()
+
+		after (done) ->
+			User.destroy({username: 'testuser'}).exec (err)->
+				done(err)
+
+		# Password
+		describe "password:", ->
+
+			it "must be encrypted if it changes", (done) ->
+				oldHashedPass = null
+				User.update({username: 'testuser'}, {password: 'test_password2'}).exec (err, updated) ->
+					if err then throw err
+					expect(updated[0].password).to.be.a('string')
+					expect(updated[0].password).to.not.be('test_password2')
+					expect(updated[0].password).to.not.be(oldHashedPass)
+					bcrypt.compare 'test_password2', updated[0].password, (err, isEqual) ->
+						expect(isEqual).to.be(true)
+						done()
+
+	# When Updating a user
+	describe "Session Tokens", ->
+		user = null
+
 		# Password
 		describe "password:", ->
 
@@ -199,49 +235,4 @@ describe "User Model:", ->
 					bcrypt.compare 'test_password2', updated[0].password, (err, isEqual) ->
 						expect(isEqual).to.be(true)
 						done()
-
-						
-
-
-		# describe ""						
-		# before (done) ->
-		# 	userData =
-		# 		username: "testuser"
-		# 		email: "testuser@sails.com"
-		# 		password: "test_password"
-		# 		passwordConfirm: "test_password"
-
-		# 	User.create(userData).exec (err,newUser) ->
-		# 		if err then console.log err
-		# 		user = newUser
-		# 		done()
-
-		# after (done) ->
-		# 	User.destroy({username: 'testuser'}).exec (err)->
-		# 		done(err)
-
-		# describe "Password encryption for a new user", ->
-
-		# 	it "must encrypt the password", ->
-		# 		expect(user.password).to.be.a('string')
-		# 		expect(user.password).to.not.be('test_password')
-		# 		expect(user).to.not.have.property('passwordConfirm')
-
-	 #  describe "Updating a user", ->
-	 #  	it "must require user's current password", (done) ->
-	 #  		User.update({username: 'testuser'}, {email: 'testuser2@sails.com'}).exec (err, updated) ->
-	 #  			expect(err).to.be.ok()
-	 #  			done()
-
-	 #  describe "Password encryption for an existing user", ->
-	 #  	it "must encrypt password if password is changed", (done) ->
-	 #  		oldPassHash = user.password
-	 #  		User.update({username: 'testuser'}, {password: 'another_password'}).exec (err, updated) ->
-	 #  			if err
-	 #  				console.log(err)
-	 #  				done()
-		#   		expect(updated[0].password).to.be.a('string')
-		#   		expect(updated[0].password).to.not.be('another_password')
-		#   		expect(updated[0].password).to.not.be(oldPassHash)
-		#   		done()
 
