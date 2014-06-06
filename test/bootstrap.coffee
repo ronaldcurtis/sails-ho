@@ -30,9 +30,10 @@ dropDb = (cb) ->
       cb()
 
 before (done) ->
-  this.timeout(10000)
+  console.log('\n---------------\nStarting Server\n---------------\n')
   sails.lift { port: 7357 }, (err, sails) ->
     dropDb ->
+      console.log('\n---------------\nTest Results:\n---------------\n')
       done()
 
 

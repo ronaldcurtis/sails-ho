@@ -14,6 +14,7 @@ module.exports = {
   	
   	username: {
   		type: 'alphanumericdashed',
+      maxLength: 50,
   		required: true,
   		unique: true
   	},
@@ -27,6 +28,7 @@ module.exports = {
   	password: {
   		type: 'string',
   		minLength: 6,
+      maxLength: 50,
   		required: true,
   		columnName: 'encryptedPassword'
   	},
@@ -77,6 +79,25 @@ module.exports = {
 			});
 		});
 	},
+
+  beforeUpdate: function(values, next) {
+    // if (!values.password || values.password != values.passwordConfirm ) {
+    //   return next({err:'Passwords do not match'});
+    // }
+    // Updating requires user to enter password
+    if (!values.password) {
+      return next({err: 'Must enter a password'});
+    }
+    // bcrypt.compare values.password, this.password
+    // bcrypt.genSalt(10, function(err, salt) {
+    //   if (err){return next(err);}
+    //   bcrypt.hash(values.password, salt, function(err, hash) {
+    //     if (err){return next(err);}
+    //     values.password = hash;
+    //     next();
+    //   });
+    // });
+  },
 
 
   issueSessionToken: function(user, cb) {
