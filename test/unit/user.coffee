@@ -1,30 +1,28 @@
-# describe "User Model:", ->
+describe "User Model:", ->
 
-#   describe "Password encryption", ->
+  describe "Password encryption", ->
 
-#     describe "for a new user", ->
-#       user = null
+    describe "for a new user", ->
+      user = null
 
-#       before (done) ->
-# 				userData =
-# 					username: "testuser"
-# 					email: "testuser@sails.com"
-# 					password: "test_password"
-# 					passwordConfirmation: "test_password"
+      before (done) ->
+        userData =
+          username: "testuser"
+          email: "testuser@sails.com"
+          password: "test_password"
+          passwordConfirm: "test_password"
 
-# 				User.create userData, (err, newUser) ->
-# 					if (err) then return cb(err)
-# 					user = newUser
-# 					done()
+        User.create(userData).exec (err,newUser) ->
+          if err then console.log err
+          user = newUser
+          done()
 
-# 			after (done) ->
-# 				user.destroy (err) ->
-# 					done(err)
+      after (done) ->
+        User.destroy({username: 'testuser'}).exec (err)->
+          done(err)
 
-# 			it "must encrypt the password", ->
-# 				expect(user.encrypterPassword).to.be.ok()
-# 				# user.must.not.have.property('password');
-# 				# user.must.not.have.property('passwordConfirmation');
-
-
-
+      it "must encrypt the password", ->
+        expect(user.password).to.be.a('string')
+        expect(user.password).to.not.be('test_password')
+        expect(user).to.not.have.property('passwordConfirm')
+        # user.must.not.have.property('passwordConfirmation');

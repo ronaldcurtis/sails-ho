@@ -1,6 +1,6 @@
-# This sets up the testing environment
-# Drops the testing db before and after tests run
-# Starts the sails server before running tests, then stops it after tests are done.
+# # This sets up the testing environment
+# # Drops the testing db before and after tests run
+# # Starts the sails server before running tests, then stops it after tests are done.
 global.expect  = require('expect.js')
 global.request = require('supertest')
 sails = require('sails')
