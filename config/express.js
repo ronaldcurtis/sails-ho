@@ -33,8 +33,8 @@ passport.use(new RememberMeStrategy(
       cb(err, user);
     });
   },
-  function(token,cb){
-    User.issueSessionToken(token,cb);
+  function(user,cb){
+    User.issueSessionToken(user,cb);
   }
 ));
 
