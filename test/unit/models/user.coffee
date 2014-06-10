@@ -200,12 +200,12 @@ describe "User Model:", ->
 						expect(isEqual).to.be(true)
 						done()
 
-	# When Updating a user
+	# Session Tokents
 	describe "Session Tokens", ->
 		user = null
 
 		# Password
-		describe "password:", ->
+		describe "User.issueSessionToken", ->
 
 			before (done) ->
 				userData =
@@ -225,14 +225,13 @@ describe "User Model:", ->
 				User.destroy({username: 'testuser'}).exec (err)->
 					done(err)
 
-			it "must be encrypted if it changes", (done) ->
-				oldHashedPass = null
-				User.update({username: 'testuser'}, {password: 'test_password2'}).exec (err, updated) ->
+			it "must persist in the database", (done) ->
+				User.issueSessionToken user, (err,token) ->
 					if err then throw err
-					expect(updated[0].password).to.be.a('string')
-					expect(updated[0].password).to.not.be('test_password2')
-					expect(updated[0].password).to.not.be(oldHashedPass)
-					bcrypt.compare 'test_password2', updated[0].password, (err, isEqual) ->
-						expect(isEqual).to.be(true)
-						done()
+					User.findOne({username: 'testuser'}).exec (err,user) ->
+						if err then console.log err
+						expect(user.sessionTokens).to.not.be.empty()
+						expect(user.sessionTokens.length).to.be(1)
+						expect(user.sessionTokens[0]).to.be(token)
+						done() 
 

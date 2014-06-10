@@ -88,6 +88,7 @@ module.exports = {
 	},
 
   beforeUpdate: function(values, next) {
+    // TODO: check for previous password value.only hash if it has changed (when this issue is fixed: https://github.com/balderdashy/sails/issues/1794)
     if (values.password) {
       User.encryptPassword(values.password, function(err, hash) {
         if (err) return next(err);
